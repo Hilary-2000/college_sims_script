@@ -10,7 +10,7 @@
             $dbname = 'ladybird_smis';
             $hostname = 'localhost';
             $dbusername = 'root';
-            $dbpassword = '';
+            $dbpassword = '2000hILARY';
             if(!isset($_SESSION)) {
                 session_start(); 
             }
@@ -37,6 +37,7 @@
                                 // download files and store them in the folder it should be in
                                 $download_file = $file['download_file'];
                                 $replace_file = $file['replace_file'];
+                                // echo $download_file." ".$replace_file."<br>";
         
                                 // new file location
                                 $new_file_location = move_files($download_file);
@@ -48,10 +49,10 @@
                         }
         
                         // update and set the updates as done.
-                        // $update = "UPDATE `updated_files` SET `active` = '0' WHERE `id` = ?";
-                        // $stmt = $conn->prepare($update);
-                        // $stmt->bind_param("s",$row['id']);
-                        // $stmt->execute();
+                        $update = "UPDATE `updated_files` SET `active` = '0' WHERE `id` = ?";
+                        $stmt = $conn->prepare($update);
+                        $stmt->bind_param("s",$row['id']);
+                        $stmt->execute();
                     }
                 }
                 echo json_encode($file_locations);
@@ -136,7 +137,7 @@
             // The file is valid
 
             // folder to store the changes
-            $upgrades_folder = "/opt/lampp/htdocs/college_sims_script/upgrades";
+            $upgrades_folder = "/var/www/college_sims/college_sims/ajax/college_sims_script/upgrades";
 
             // Check if the folder doesn't exist
             if (!is_dir($upgrades_folder)) {
@@ -153,7 +154,7 @@
             // Move the file to the upgrades folder
             if (rename($file_location, $new_file_location)) {
                 // Return the new file location in the response
-                $file_location = "http://192.168.88.237:81/college_sims_script/upgrades/".$new_file_name;
+                $file_location = "https://college.ladybirdsmis.com/college_sims/ajax/college_sims_script/upgrades/".$new_file_name;
                 // echo $file_location."<br>";
                 return array('new_file_location' => $file_location);
             }
